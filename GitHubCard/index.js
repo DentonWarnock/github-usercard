@@ -3,30 +3,16 @@
            https://api.github.com/users/<your name>
 */
 
-//const axios = require('axios');
 axios.get('https://api.github.com/users/DentonWarnock')
   .then(function (response) {
     // handle success
     console.log(response);
+    gitCardFactory(response);
   })
   .catch(function (error) {
     // handle error
     console.log(error);
   })
-
-// makeGitCards = async (url) => {
-//   try {
-//     let results = await axios.get(url);
-//     results.data.message.forEach(user => {
-//       entryPoint.appendChild(GitCard(user, 'Denton'));
-//       console.log(user);
-//     })
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-//makeGitCards("https://api.github.com/users/DentonWarnock");
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -47,6 +33,14 @@ axios.get('https://api.github.com/users/DentonWarnock')
           
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
+*/
+
+/* List of LS Instructors Github username's: 
+  tetondan
+  dustinmyers
+  justsml
+  luishrd
+  bigknell
 */
 
 const followersArray = [];
@@ -70,11 +64,52 @@ const followersArray = [];
 </div>
 
 */
+const cards = document.querySelector('.cards');
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
+function gitCardFactory(obj) {
+
+  // create elements
+  const card = document.createElement('div');
+  const img = document.createElement('img');
+  const info = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+  // create structure
+  info.appendChild(name);
+  info.appendChild(username);
+  info.appendChild(location);
+  info.appendChild(profile);
+  profile.appendChild(profileLink);
+  info.appendChild(followers);
+  info.appendChild(following);
+  info.appendChild(bio);
+  card.appendChild(img);
+  card.appendChild(info);
+  cards.appendChild(card);
+
+  // set the content
+  img.src = obj.data.avatar_url;
+  name.textContent = obj.data.name;
+  username.textContent = obj.data.login;
+  location.textContent = 'Location: ' + obj.data.location;
+  profile.textContent = 'Profile: ';
+  profileLink.textContent = obj.data.html_url;
+  followers.textContent = 'Followers: ' + obj.data.followers;
+  following.textContent = 'Following: ' + obj.data.following;
+  bio.textContent = 'Bio: ' + obj.data.bio;
+
+  // apply styles
+
+  // event handlers
+  
+
+
+  return card;
+}
