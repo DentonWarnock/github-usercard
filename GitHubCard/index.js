@@ -6,7 +6,7 @@
 axios.get('https://api.github.com/users/DentonWarnock')
   .then(function (response) {
     // handle success
-    console.log(response);
+    //console.log(response);
     gitCardFactory(response);
   })
   .catch(function (error) {
@@ -43,7 +43,25 @@ axios.get('https://api.github.com/users/DentonWarnock')
   bigknell
 */
 
-const followersArray = [];
+const followersArray = [
+  'robsalzberg',
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',  
+  ];
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`)
+    .then(function (obj) {
+      gitCardFactory(obj);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -75,18 +93,20 @@ function gitCardFactory(obj) {
   const name = document.createElement('h3');
   const username = document.createElement('p');
   const location = document.createElement('p');
-  const profile = document.createElement('p');
+  const profile = document.createElement('span');
   const profileLink = document.createElement('a');
   const followers = document.createElement('p');
   const following = document.createElement('p');
   const bio = document.createElement('p');
 
+
+  
   // create structure
   info.appendChild(name);
   info.appendChild(username);
-  info.appendChild(location);
-  info.appendChild(profile);
-  profile.appendChild(profileLink);
+  info.appendChild(location);  
+  info.appendChild(profile);  
+  info.appendChild(profileLink); 
   info.appendChild(followers);
   info.appendChild(following);
   info.appendChild(bio);
@@ -98,18 +118,18 @@ function gitCardFactory(obj) {
   img.src = obj.data.avatar_url;
   name.textContent = obj.data.name;
   username.textContent = obj.data.login;
-  location.textContent = 'Location: ' + obj.data.location;
-  profile.textContent = 'Profile: ';
-  profileLink.textContent = obj.data.html_url;
+  location.textContent = 'Location: ' + obj.data.location;  
+  profileLink.href = obj.data.html_url;
+  profileLink.textContent = obj.data.html_url;  
+  profile.textContent = `Profile: `;
   followers.textContent = 'Followers: ' + obj.data.followers;
   following.textContent = 'Following: ' + obj.data.following;
   bio.textContent = 'Bio: ' + obj.data.bio;
 
   // apply styles
-
-  // event handlers
-  
-
+  card.classList.add('card');
+  name.classList.add('name');
+  username.classList.add('username'); 
 
   return card;
 }
