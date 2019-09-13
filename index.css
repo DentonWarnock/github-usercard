@@ -53,6 +53,7 @@ table {
 html, body, * {
   font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
+  font-size: 1.4rem;
 }
 
 html {
@@ -85,6 +86,7 @@ body {
 
 .header p {
   font-size: 48px;
+  
 }
 
 .cards {
@@ -122,6 +124,8 @@ body {
   font-style: italic;
   margin: 3px 0 10px;
 }
+
+
 
 
 

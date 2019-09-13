@@ -3,6 +3,17 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/DentonWarnock')
+  .then(function (response) {
+    // handle success
+    //console.log(response);
+    gitCardFactory(response);
+  })
+  .catch(function (error) {
+    // handle error
+    console.log(error);
+  })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +35,33 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+/* List of LS Instructors Github username's: 
+  tetondan
+  dustinmyers
+  justsml
+  luishrd
+  bigknell
+*/
+
+const followersArray = [
+  'robsalzberg',
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell',  
+  ];
+
+followersArray.forEach(user => {
+  axios.get(`https://api.github.com/users/${user}`)
+    .then(function (obj) {
+      gitCardFactory(obj);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,11 +82,54 @@ const followersArray = [];
 </div>
 
 */
+const cards = document.querySelector('.cards');
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
+function gitCardFactory(obj) {
+
+  // create elements
+  const card = document.createElement('div');
+  const img = document.createElement('img');
+  const info = document.createElement('div');
+  const name = document.createElement('h3');
+  const username = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('span');
+  const profileLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+
+  
+  // create structure
+  info.appendChild(name);
+  info.appendChild(username);
+  info.appendChild(location);  
+  info.appendChild(profile);  
+  info.appendChild(profileLink); 
+  info.appendChild(followers);
+  info.appendChild(following);
+  info.appendChild(bio);
+  card.appendChild(img);
+  card.appendChild(info);
+  cards.appendChild(card);
+
+  // set the content
+  img.src = obj.data.avatar_url;
+  name.textContent = obj.data.name;
+  username.textContent = obj.data.login;
+  location.textContent = 'Location: ' + obj.data.location;  
+  profileLink.href = obj.data.html_url;
+  profileLink.textContent = obj.data.html_url;  
+  profile.textContent = `Profile: `;
+  followers.textContent = 'Followers: ' + obj.data.followers;
+  following.textContent = 'Following: ' + obj.data.following;
+  bio.textContent = 'Bio: ' + obj.data.bio;
+
+  // apply styles
+  card.classList.add('card');
+  name.classList.add('name');
+  username.classList.add('username'); 
+
+  return card;
+}
